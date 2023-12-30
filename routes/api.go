@@ -3,16 +3,10 @@ package routes
 import (
 	"app/controller"
 	"app/middleware"
-	"app/utils"
-	m "github.com/labstack/echo-jwt"
 	"github.com/labstack/echo/v4"
 	"net/http"
-	"os"
 )
 
-func customJWTErrorHandler(c echo.Context, err error) error {
-	return c.JSON(http.StatusUnauthorized, utils.ErrorResponse("Invalid credentials"))
-}
 func Init() *echo.Echo {
 
 	e := echo.New()
@@ -22,12 +16,6 @@ func Init() *echo.Echo {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Welcome to RESTful API Services test")
 	})
-	eJwt := e.Group("")
-
-	eJwt.Use(m.WithConfig(m.Config{
-		SigningKey:   []byte(os.Getenv("SECRET_KEY")),
-		ErrorHandler: customJWTErrorHandler, // Set the custom error handler
-	}))
 
 	//Manage User
 	e.POST("/users/register", controller.Store)
@@ -42,6 +30,18 @@ func Init() *echo.Echo {
 	e.GET("/menus/:id", controller.ShowMenu)
 	e.PUT("/menus/:id", controller.UpdateMenu)
 	e.DELETE("/menus/:id", controller.DeleteMenu)
+
+	//Manage Order
+	e.GET("/orders", controller.IndexOrder)
+	e.GET("/orders/:id", controller.ShowOrder)
+	e.PUT("/orders/:id", controller.UpdateOrder)
+
+	//Manage OrderItem
+	e.POST("/orderitem", controller.StoreOrderItem)
+	e.GET("/orderitem", controller.IndexOrderItem)
+	e.GET("/orderitem/:id", controller.ShowOrderItem)
+	e.PUT("/orderitem/:id", controller.UpdateOrderItem)
+	e.DELETE("/orderitem/:id", controller.DeleteOrderItem)
 
 	return e
 

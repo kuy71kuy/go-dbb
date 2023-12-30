@@ -35,5 +35,5 @@ func ConnectDB() {
 }
 
 func InitMigrate() {
-	DB.AutoMigrate(&model.User{}, &model.Menu{}, &model.Order{}, &model.OrderDetail{}, &model.Payment{}, &model.Report{})
+	DB.AutoMigrate(&model.User{}, &model.Menu{}, &model.Order{}, &model.OrderItem{}, &model.Payment{}, &model.Report{})
 }

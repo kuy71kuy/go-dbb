@@ -45,13 +45,22 @@ func Show(c echo.Context) error {
 
 func Store(c echo.Context) error {
 	var user model.User
+	order := model.Order{
+		UserId: 0,
+		Status: "process",
+	}
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, utils.ErrorResponse("Invalid request body"))
 	}
-
+	//make user together with the order, automatically has
 	if err := config.DB.Create(&user).Error; err != nil {
 		log.Fatal(err)
 		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to store user data"))
+	}
+	order.UserId = int(user.ID)
+	if err := config.DB.Create(&order).Error; err != nil {
+		log.Fatal(err)
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to store user order data"))
 	}
 
 	return c.JSON(http.StatusCreated, utils.SuccessResponse("Success Created Data", user))
