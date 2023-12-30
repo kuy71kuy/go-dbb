@@ -9,9 +9,9 @@ func ConvertIndex(users []model.User) []web.GetUserResponse {
 	var results []web.GetUserResponse
 	for _, user := range users {
 		userResponse := web.GetUserResponse{
-			Id:    int(user.ID),
-			Name:  user.Name,
-			Email: user.Email,
+			Id:          int(user.ID),
+			Name:        user.Name,
+			TableNumber: user.TableNumber,
 		}
 		results = append(results, userResponse)
 	}
@@ -19,19 +19,18 @@ func ConvertIndex(users []model.User) []web.GetUserResponse {
 	return results
 }
 
-func ConvertGeneral(user *model.User) web.UserResponse {
-	return web.UserResponse{
-		Id:       int(user.ID),
-		Name:     user.Name,
-		Email:    user.Email,
-		Password: user.Password,
+func ConvertIndexMenu(menus []model.Menu) []web.GetMenuResponse {
+	var results []web.GetMenuResponse
+	for _, menu := range menus {
+		menuRespose := web.GetMenuResponse{
+			Id:       int(menu.ID),
+			Name:     menu.Name,
+			Price:    menu.Price,
+			Category: menu.Category,
+			Stock:    menu.Stock,
+		}
+		results = append(results, menuRespose)
 	}
-}
 
-func GetConvertGeneral(user *model.User) web.GetUserResponse {
-	return web.GetUserResponse{
-		Id:    int(user.ID),
-		Name:  user.Name,
-		Email: user.Email,
-	}
+	return results
 }
