@@ -1,5 +1,5 @@
-# trash-4-money
-Mini Project Golang Alterra Academy
+# BackEnd Aplikasi Pemesanan Makanan Dapur Bunda Bahagia
+Tugas LSP Programmer
 
 ERD : https://app.eraser.io/workspace/VpHfZXyIA0kJuudpDIqB?origin=share
 
