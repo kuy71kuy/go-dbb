@@ -100,6 +100,18 @@ func Delete(c echo.Context) error {
 	if result.Error != nil {
 		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to retrieve user"))
 	}
+	var updatedOrder model.Order
+	updatedOrder.Status = "cancel"
+
+	var existingOrder model.Order
+	resultOrder := config.DB.First(&existingOrder, id)
+	if resultOrder.Error != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to retrieve order"))
+	}
+	resultUpdateOrder := config.DB.Model(&existingOrder).Updates(updatedOrder)
+	if resultUpdateOrder.Error != nil {
+		return c.JSON(http.StatusInternalServerError, utils.ErrorResponse("Failed to update order"))
+	}
 	config.DB.Delete(&existingUser)
 
 	return c.JSON(http.StatusOK, utils.SuccessResponse("User data successfully deleted", nil))
